@@ -10,9 +10,9 @@ Check whether a string is a valid DiaML formatted call.
 Currently, the validation function is not very strict.
  - It only checks if DiaML is followed for each line independently of other lines.
  - Doesn't check other things, such as:
-    1. <user> tag always follows <API> or <agent> tag
-    2. <API> tag always follows <system> tag
-    3. <system> will only come after an <API> tag
+    1. `<user>` tag always follows `<API>` or `<agent>` tag
+    2. `<API>` tag always follows `<system>` tag
+    3. `<system>` will only come after an `<API>` tag
     4. etc..
 
 ```python
