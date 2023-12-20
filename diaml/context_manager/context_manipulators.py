@@ -51,9 +51,6 @@ class UnknownPruner(ContextManipulator):
 
         self.verbose = verbose
         unknown_turn = f"{diaml.data.tokens.USER_TAG}{diaml.data.tokens.UNKNOWN_MESSAGE}"
-        # self.pattern = re.compile(
-        #     rf'({unknown_turn}{diaml.data.tokens.EOS_TOKEN}\s*{diaml.data.tokens.AGENT_TAG}.*?{diaml.data.tokens.EOS_TOKEN}\s*)(?={diaml.data.tokens.USER_TAG}[^_]|{diaml.data.tokens.AGENT_TAG})'
-        # )
 
         self.pattern = re.compile(
             rf'(({unknown_turn}{diaml.data.tokens.EOS_TOKEN}\s*{diaml.data.tokens.AGENT_TAG}.*?{diaml.data.tokens.EOS_TOKEN}\s*)+)(?={diaml.data.tokens.USER_TAG}[^_]|{diaml.data.tokens.AGENT_TAG})'
