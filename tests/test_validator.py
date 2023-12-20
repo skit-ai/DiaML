@@ -1,5 +1,5 @@
 import pytest
-from diaml.validator import validate_diaml
+from diaml.validators.line_validator import validate_diaml
 
 
 def test_good_call():
