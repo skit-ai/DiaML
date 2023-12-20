@@ -35,7 +35,7 @@ CALL:
         '''Method that uses diaml.data.tokens.EOS_TOKEN to stitch context with a new user utterance.'''
         self.context += system_message + diaml.data.tokens.EOS_TOKEN + diaml.data.tokens.NEWLINE_TOKEN
 
-    def get_context(self, use_manipulators: bool=True) -> str:
+    def get_context(self, use_manipulators: bool) -> str:
         context = self.context
         if use_manipulators:
             context = self.manipulator(context)
