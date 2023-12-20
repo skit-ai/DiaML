@@ -1,0 +1,1 @@
+from diaml.validators.line_validator import validate_diaml
