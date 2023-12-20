@@ -1,6 +1,6 @@
 import re
 
-def validate_diaml(call, verbose=False):
+def validate_diaml(call: str, verbose:bool=False) -> bool:
     # a loose check on DiaML format
     # only checks if DiaML is followed for each line independently of other lines.
     # doesn't check other things, such as:

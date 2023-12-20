@@ -1,0 +1,14 @@
+API_OVERRIDES:
+  telephonyAgentTransfer:
+    message_type: TRANSFER
+  telephonyHangup:
+    message_type: HANGUP
+  telephonyInputDTMF:
+    message_type: DTMF
+    override_args:
+      num_digits: "1"
+      dtmf_max_wait_time: "30"
+  SMSPaymentLink: {}
+  CheckAgentAvailability: {}
+  Callback: {}
+  CapturePayLaterDate: {}
