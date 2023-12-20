@@ -1,1 +1,1 @@
-from api_config import get_api_config
+from diaml.api.api_config import APIConfig

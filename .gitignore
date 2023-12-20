@@ -2,3 +2,4 @@
 build/
 dist/
 diaml.egg-info/
+__pycache__/
