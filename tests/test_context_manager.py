@@ -1,4 +1,5 @@
 from diaml.context_manager import ContextManager
+import pytest
 
 metadata = '''USER_METADATA: {'first_name': 'Sarah', 'last_name': 'Brown', 'due_amount': 1562, 'last_4_digits_phone_number': 2457, 'user_address': '456 Oakwood Avenue Austin Texas', 'vehicle_details': '2016 Honda Accord'}
 CLIENT_CONFIG: {'company_name': 'SameDay Auto', 'first_option': 1328, 'second_option': 1093, 'third_option': 937, 'minimum_acceptable': 781, 'Auth 1': 'address', 'Auth required': 'Yes', 'No. of Auth steps': 1}
@@ -168,22 +169,30 @@ CALL:
 <user>yes</s>
 '''
 def test_contextmanager_unknown_turns():
-    cm = ContextManager("")
+    cm = ContextManager("\n")
     cm.context = context5
 
     assert cm.get_context(use_manipulators=True) == result5
 
-    cm = ContextManager("")
+    cm = ContextManager("\n")
     cm.context = context6
 
     assert cm.get_context(use_manipulators=True) == result6
 
-    cm = ContextManager("")
+    cm = ContextManager("\n")
     cm.context = context7
 
     assert cm.get_context(use_manipulators=True) == result7
 
-    cm = ContextManager("")
+    cm = ContextManager("\n")
     cm.context = context8
 
     assert cm.get_context(use_manipulators=True) == result8
+
+def test_contextmanager_assertion_error():
+    with pytest.raises(AssertionError) as excinfo:
+        cm = ContextManager("CALL:")
+
+def test_contextmanager_assertion_error2():
+    with pytest.raises(AssertionError) as excinfo:
+        cm = ContextManager("")

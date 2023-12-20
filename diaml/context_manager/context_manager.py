@@ -10,6 +10,9 @@ CALL_TYPE: OUTBOUND
 CALL:
 ```     Notably, it must end with `\n`!!
         '''
+        assert(len(metadata) > 0)
+        assert(metadata[-1] == diaml.data.tokens.NEWLINE_TOKEN)
+        
         self.metadata = metadata
         self.context = metadata
         self.manipulator = manipulator
