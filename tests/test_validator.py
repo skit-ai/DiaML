@@ -1,17 +1,6 @@
 import pytest
 from diaml.validator import validate_diaml
 
-<<<<<<<< HEAD:tests/test_validator.py
-========
-def validate_diaml(call: str, verbose:bool=False) -> bool:
-    # a loose check on DiaML format
-    # only checks if DiaML is followed for each line independently of other lines.
-    # doesn't check other things, such as:
-    # 1. <user> tag always follows <API> or <agent> tag
-    # 2. <API> tag always follows <system> tag
-    # 3. <system> will only come after an <API> tag
-    # etc..
->>>>>>>> main:diaml/validators/line_validator.py
 
 def test_good_call():
     call = '''CLIENT_CONFIG: {"Agent Name": "Amanda", "Auth 1": "null", "Auth 2": "null", "Auth required": "No", "Client": "ETG Credit collections", "Creditor": "null", "No. of Auth steps": 0}
