@@ -1,5 +1,5 @@
 import re
-
+import diaml.data.tokens
 
 def validate_diaml(call, verbose=False):
     # a loose check on DiaML format
@@ -10,47 +10,33 @@ def validate_diaml(call, verbose=False):
     # 3. <system> will only come after an <API> tag
     # etc..
 
-    valid_tags = {"agent", "user", "API", "system"}
+    valid_tags = {diaml.data.tokens.AGENT_TAG, diaml.data.tokens.API_TAG, diaml.data.tokens.SYSTEM_TAG, diaml.data.tokens.USER_TAG}
+    escaped_eos = re.escape(diaml.data.tokens.EOS_TOKEN)
 
-    api_pattern = re.compile(r'<API>[A-Za-z0-9_]+\(([^=]+="[^"]*"(, [^=]+="[^"]*")*)?\)')
-    system_pattern = re.compile(r'<system>\{status: (success|fail)(,\s*metadata: "[^"]*")?\}')
-    agent_pattern = re.compile(r'<agent>.+')
+    api_pattern = re.compile(rf'({diaml.data.tokens.API_TAG}[A-Za-z0-9_]+\(\s*(\w+="[^"]*"\s*,?\s*)*\))' + escaped_eos)
+    system_pattern = re.compile(diaml.data.tokens.SYSTEM_TAG + r'\{status:(success|fail)(,\s*metadata: "[^"]*")?\}' + escaped_eos)
+    agent_pattern = re.compile(rf'{diaml.data.tokens.AGENT_TAG}.+')
 
-    current_line = 0
-    lines = call.splitlines()
-    if lines[0].find("CLIENT_CONFIG: ") == -1:
-        if verbose:
-            print(f"Error on line {current_line}: Invalid CLIENT_CONFIG format.")
-            print("Line: ", lines[0])
-        return False
+    call_lines = call.splitlines()
+    for i, l in enumerate(call_lines):
+        if l.find("CALL:") != -1:
+            call_block_line = i + 1
+            break
 
-    current_line = 1
-    if lines[1].find("USER_METADATA: ") == -1:
-        if verbose:
-            print(f"Error on line {current_line}: Invalid USER_METADATA format.")
-            print("Line: ", lines[1])
-        return False
-
-    current_line = 2
-    if lines[2].find("CALL:") == -1:
-        if verbose:
-            print(f"Error on line {current_line}: Invalid USER_METADATA format.")
-            print("Line: ", lines[2])
-        return False
-
-    current_line = 3
+    current_line = call_block_line
     for line in call.splitlines()[current_line:]:
         current_line += 1
         line = line.strip()
 
         if line.startswith("<"):
-            match = re.match(r'<(agent|user|API|system)>\s*(.+)', line)
+            match = re.match(f"^{diaml.data.tokens.USER_TAG}|^{diaml.data.tokens.AGENT_TAG}|^{diaml.data.tokens.API_TAG}|^{diaml.data.tokens.SYSTEM_TAG}", line)
+
             if not match:
                 if verbose:
                     print(f"Error on line {current_line}: Invalid tag format.")
                     print("Line: ", line)
                 return False
-            tag = match.group(1)
+            tag = match.group()
 
             if tag not in valid_tags:
                 if verbose:
@@ -58,21 +44,21 @@ def validate_diaml(call, verbose=False):
                     print("Line: ", line)
                 return False
 
-            if tag == "API":
+            if tag == diaml.data.tokens.API_TAG:
                 if not api_pattern.match(line):
                     if verbose:
                         print(f"Error on line {current_line}: Invalid API tag format.")
                         print("Line: ", line)
                     return False
 
-            if tag == "system":
+            if tag == diaml.data.tokens.SYSTEM_TAG:
                 if not system_pattern.match(line):
                     if verbose:
                         print(f"Error on line {current_line}: Invalid system tag format.")
                         print("Line: ", line)
                     return False
 
-            if tag == "agent":
+            if tag == diaml.data.tokens.AGENT_TAG:
                 if not agent_pattern.match(line):
                     if verbose:
                         print(f"Error on line {current_line}: Invalid agent tag format.")
